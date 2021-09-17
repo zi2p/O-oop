@@ -19,30 +19,38 @@ namespace Isu.Tests
         public void AddStudentToGroup_StudentHasGroupAndGroupContainsStudent()
         {
             var group = new Group("M3105");
-            _isuService.AddStudent(group, "Хащук Денис Васильевич");
+            var student = _isuService.AddStudent(group, "Хащук Денис Васильевич");
             var newGroup = new Group("M3100");
-            _isuService.AddStudent(newGroup, "Хащук Денис Васильевич");
+            _isuService.AddStudent(newGroup, student.GetName());
+            Assert.AreEqual(student.GetGroup(),group);
+            Assert.AreEqual(group.FindStudent(student.GetName()),student);
         }
 
         [Test]
         public void ReachMaxStudentPerGroup_ThrowException()
         {
-            var group = new Group("M3105");
-            var sr = new StreamReader("M3105.txt");
-            while (!sr.EndOfStream)
+            Assert.Catch<IsuException>(() =>
             {
-                _isuService.AddStudent(group, sr.ReadLine());
-            }
-            sr.Close();
-            _isuService.AddStudent(group, "Пинчук Анастасия Дмитриевна");
+                var group = new Group("M3105");
+
+                for (int i = 0; i < 22; i++)
+                {
+                    var student = _isuService.AddStudent(group, i.ToString());
+                    group.AddStudent(student);
+                }
+                _isuService.AddStudent(group, "Пинчук Анастасия Дмитриевна");
+            });
         }
 
         [Test]
         public void CreateGroupWithInvalidName_ThrowException()
         {
-            Group group1 = _isuService.AddGroup("N4100");
-            Group group2 = _isuService.AddGroup("M3508");
-            Group group3 = _isuService.AddGroup("M31000");
+            Assert.Catch<IsuException>(() =>
+            {
+                Group group1 = _isuService.AddGroup("N4100");
+                Group group2 = _isuService.AddGroup("M3508");
+                Group group3 = _isuService.AddGroup("M31000");
+            });
         }
 
         [Test]
@@ -50,8 +58,10 @@ namespace Isu.Tests
         {
             var group = new Group("M3105");
             Student student = _isuService.AddStudent(group, "Хащук Денис Васильевич");
+            Assert.AreEqual(student.GetGroup().GetName(),group.GetName());
             var newGroup = new Group("M3100");
             _isuService.ChangeStudentGroup(student, newGroup);
+            Assert.AreEqual(newGroup.FindStudent("Хащук Денис Васильевич").GetGroup().GetName(),newGroup.GetName());
         }
     }
 }

@@ -2,30 +2,30 @@
 {
     public class Student
     {
-        private Group group;
-        private string name;
-        private int id;
+        private Group _group;
+        private string _name;
+        private int _id;
 
         public Student(Group group, string name, int id)
         {
-            this.name = name;
-            this.group = group;
-            this.id = id;
+            _name = name;
+            _group = group;
+            _id = id;
         }
 
         public string GetName()
         {
-            return name;
+            return _name;
         }
 
         public int GetID()
         {
-            return id;
+            return _id;
         }
 
         public Group GetGroup()
         {
-            return @group;
+            return _group;
         }
     }
 }

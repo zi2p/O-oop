@@ -4,29 +4,28 @@ namespace Isu.Services
 {
     public class CourseNumber
     {
-        private string number;
-        private List<Group> listOfGroups = new List<Group>();
+        private char _number;
+        private List<Group> _listOfGroups = new List<Group>();
 
-        public CourseNumber(string nameOfCourse, Group group)
+        public CourseNumber(char number, Group group)
         {
-            number = nameOfCourse;
-            listOfGroups.Add(group);
+            _number = number;
+            _listOfGroups.Add(group);
         }
 
         public void AddGroup(Group group)
         {
-            listOfGroups.Add(group);
+            _listOfGroups.Add(group);
         }
 
-        public string GetNumber()
+        public char GetNumber()
         {
-            return number;
+            return _number;
         }
 
         public List<Group> GetList()
         {
-            return listOfGroups;
+            return _listOfGroups;
         }
-        
     }
 }
