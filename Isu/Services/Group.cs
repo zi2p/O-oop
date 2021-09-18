@@ -33,11 +33,6 @@ namespace Isu.Services
             Students.Add(student);
         }
 
-        public Student FindStudent(string name)
-        {
-            return Students.FirstOrDefault(student => student.Name == name);
-        }
-
         public void DeleteStudent(Student student)
         {
             Students.Remove(student);

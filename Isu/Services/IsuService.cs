@@ -59,8 +59,6 @@ namespace Isu.Services
             }
 
             return null;
-
-            // другой линк через .Where
         }
 
         public List<Student> FindStudents(string groupName)

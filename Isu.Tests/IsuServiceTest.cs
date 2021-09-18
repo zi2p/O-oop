@@ -23,7 +23,7 @@ namespace Isu.Tests
             var newGroup = new Group("M3100");
             _isuService.AddStudent(newGroup, student.Name);
             Assert.AreEqual(student.Group,group);
-            Assert.AreEqual(group.FindStudent(student.Name),student);
+            Assert.AreEqual(_isuService.FindStudent(student.Name),student);
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace Isu.Tests
             Assert.AreEqual(student.Group.Name,group.Name);
             var newGroup = new Group("M3100");
             _isuService.ChangeStudentGroup(student, newGroup);
-            Assert.AreEqual(newGroup.FindStudent("Хащук Денис Васильевич").Group.Name,newGroup.Name);
+            Assert.AreEqual(_isuService.FindStudent("Хащук Денис Васильевич").Group.Name,newGroup.Name);
         }
     }
 }
