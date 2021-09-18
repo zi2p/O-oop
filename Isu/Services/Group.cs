@@ -42,10 +42,5 @@ namespace Isu.Services
         {
             Students.Remove(student);
         }
-
-        public Student FindStudent(int id)
-        {
-            return Students.Find(student => student.ID == id);
-        }
     }
 }
