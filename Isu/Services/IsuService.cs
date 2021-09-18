@@ -37,12 +37,12 @@ namespace Isu.Services
         public Student GetStudent(int id)
         {
             if (id >= _smallestFreeId) throw new IsuException("error: wrong student's id \n");
-            foreach (Student student in _listOfCourses.SelectMany(cn => cn.Groups, (cn, @group) => new { cn, @group })
+            foreach (var pair in _listOfCourses.SelectMany(cn => cn.Groups, (cn, @group) => new { cn, @group })
                 .SelectMany(
                     @t => @t.@group.Students.Where(student => student.ID == id),
                     (@t, student) => new { @t, student }))
             {
-                return student;
+                return pair.student;
             }
 
             throw new IsuException("error: wrong student's id, student not found \n :c \n");
@@ -50,12 +50,12 @@ namespace Isu.Services
 
         public Student FindStudent(string name)
         {
-            foreach (Student student in _listOfCourses.SelectMany(cn => cn.Groups, (cn, @group) => new { cn, @group })
+            foreach (var pair in _listOfCourses.SelectMany(cn => cn.Groups, (cn, @group) => new { cn, @group })
                 .SelectMany(
                     @t => @t.@group.Students.Where(student => student.Name == name),
                     (@t, student) => new { @t, student }))
             {
-                return student;
+                return pair.student;
             }
 
             return null;
@@ -65,12 +65,10 @@ namespace Isu.Services
 
         public List<Student> FindStudents(string groupName)
         {
-            foreach (Group @group in from cn in _listOfCourses
-                from @group in
-                cn.Groups.Where(group => group.Name ==
-                groupName)) 
+            foreach (var pair in _listOfCourses.SelectMany(
+                cn => cn.Groups.Where(@group => @group.Name == groupName), (cn, @group) => new { cn, @group }))
             {
-                return group.Students;
+                return pair.group.Students;
             }
 
             return null;
