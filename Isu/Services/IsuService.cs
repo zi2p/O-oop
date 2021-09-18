@@ -28,6 +28,7 @@ namespace Isu.Services
 
         public Student AddStudent(Group group, string name)
         {
+            // if (FindStudent(name) != null) return null;
             var student = new Student(group, name, _smallestFreeId);
             group.AddStudent(student);
             _smallestFreeId++;
@@ -92,7 +93,7 @@ namespace Isu.Services
 
         public Group FindGroup(string groupName)
         {
-            foreach (Group @group in from cn in _listOfCourses from @group in cn.Groups where @group.Name == groupName select @group)
+            foreach (Group @group in _listOfCourses.SelectMany(cn => cn.Groups.Where(@group => @group.Name == groupName)))
                 return @group;
 
             return null;
