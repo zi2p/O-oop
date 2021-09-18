@@ -21,9 +21,9 @@ namespace Isu.Tests
             var group = new Group("M3105");
             var student = _isuService.AddStudent(group, "Хащук Денис Васильевич");
             var newGroup = new Group("M3100");
-            _isuService.AddStudent(newGroup, student.GetName());
-            Assert.AreEqual(student.GetGroup(),group);
-            Assert.AreEqual(group.FindStudent(student.GetName()),student);
+            _isuService.AddStudent(newGroup, student.Name);
+            Assert.AreEqual(student.Group,group);
+            Assert.AreEqual(group.FindStudent(student.Name),student);
         }
 
         [Test]
@@ -58,10 +58,10 @@ namespace Isu.Tests
         {
             var group = new Group("M3105");
             Student student = _isuService.AddStudent(group, "Хащук Денис Васильевич");
-            Assert.AreEqual(student.GetGroup().GetName(),group.GetName());
+            Assert.AreEqual(student.Group.Name,group.Name);
             var newGroup = new Group("M3100");
             _isuService.ChangeStudentGroup(student, newGroup);
-            Assert.AreEqual(newGroup.FindStudent("Хащук Денис Васильевич").GetGroup().GetName(),newGroup.GetName());
+            Assert.AreEqual(newGroup.FindStudent("Хащук Денис Васильевич").Group.Name,newGroup.Name);
         }
     }
 }

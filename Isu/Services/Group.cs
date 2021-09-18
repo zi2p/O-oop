@@ -7,9 +7,6 @@ namespace Isu.Services
 {
     public class Group
     {
-        private string _group;
-        private List<Student> _students = new List<Student>();
-
         public Group(string name)
         {
             if (name[0] != 'M' || name[1] != '3' || name.Length != 5)
@@ -24,33 +21,31 @@ namespace Isu.Services
                     "error: group's name must contain the course number from 1 to 4");
             }
 
-            _group = name;
+            Name = name;
         }
+
+        public string Name { get; set; }
+        public List<Student> Students { get; private set; }
 
         public void AddStudent(Student student)
         {
-            if (_students.Count > 22) throw new IsuException("error: there are many students in this group, select another group \n");
-            _students.Add(student);
+            if (Students.Count > 22) throw new IsuException("error: there are many students in this group, select another group \n");
+            Students.Add(student);
         }
 
         public Student FindStudent(string name)
         {
-            return _students.FirstOrDefault(student => student.GetName() == name);
+            return Students.FirstOrDefault(student => student.Name == name);
         }
 
         public void DeleteStudent(Student student)
         {
-            _students.Remove(student);
+            Students.Remove(student);
         }
 
-        public List<Student> GetList()
+        public Student FindStudent(int id)
         {
-            return _students;
-        }
-
-        public string GetName()
-        {
-            return _group;
+            return Students.Find(student => student.ID == id);
         }
     }
 }
