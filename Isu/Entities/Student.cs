@@ -1,4 +1,6 @@
-﻿namespace Isu.Services
+﻿using Isu.Services;
+
+namespace Isu.Entities
 {
     public class Student
     {
@@ -6,11 +8,11 @@
         {
             Name = name;
             Group = group;
-            ID = id;
+            Id = id;
         }
 
-        public Group Group { get; }
+        public Group Group { get; set; }
         public string Name { get; }
-        public int ID { get; }
+        public int Id { get; }
     }
 }

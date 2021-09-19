@@ -1,7 +1,7 @@
 using Isu.Services;
 using Isu.Tools;
 using NUnit.Framework;
-using System.IO;
+using Isu.Entities;
 
 namespace Isu.Tests
 {
@@ -18,12 +18,9 @@ namespace Isu.Tests
         [Test]
         public void AddStudentToGroup_StudentHasGroupAndGroupContainsStudent()
         {
-            var group = new Group("M3105");
-            var student = _isuService.AddStudent(group, "Хащук Денис Васильевич");
-            var newGroup = new Group("M3100");
-            _isuService.AddStudent(newGroup, student.Name);
-            Assert.AreEqual(student.Group,group);
-            Assert.AreEqual(_isuService.GetStudent(student.ID),student);
+            Group group = _isuService.AddGroup("M3105");
+            Student student = _isuService.AddStudent(group, "Хащук Денис Васильевич");
+            Assert.Contains(student, group.Students);
         }
 
         [Test]
@@ -31,11 +28,11 @@ namespace Isu.Tests
         {
             Assert.Catch<IsuException>(() =>
             {
-                var group = new Group("M3105");
+                Group group = _isuService.AddGroup("M3105");
 
                 for (int i = 0; i < 22; i++)
                 {
-                    var student = _isuService.AddStudent(group, i.ToString());
+                    Student student = _isuService.AddStudent(group, i.ToString());
                     group.AddStudent(student);
                 }
                 _isuService.AddStudent(group, "Пинчук Анастасия Дмитриевна");
@@ -56,12 +53,14 @@ namespace Isu.Tests
         [Test]
         public void TransferStudentToAnotherGroup_GroupChanged()
         {
-            var group = new Group("M3105");
+            Group group = _isuService.AddGroup("M3105");
             Student student = _isuService.AddStudent(group, "Хащук Денис Васильевич");
-            Assert.AreEqual(student.Group.Name,group.Name);
-            var newGroup = new Group("M3100");
+
+            Group newGroup = _isuService.AddGroup("M3100");
             _isuService.ChangeStudentGroup(student, newGroup);
-            Assert.AreEqual(_isuService.FindStudent("Хащук Денис Васильевич").Group.Name,newGroup.Name);
+            Assert.That(newGroup.Name.Equals(student.Group.Name));
+            Assert.Contains(student, newGroup.Students);
+            CollectionAssert.DoesNotContain(group.Students, student);
         }
     }
 }

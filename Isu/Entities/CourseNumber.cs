@@ -1,18 +1,17 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
-namespace Isu.Services
+namespace Isu.Entities
 {
     public class CourseNumber
     {
-        public CourseNumber(char number, Group group)
+        public CourseNumber(int number)
         {
             Number = number;
-            Groups.Add(group);
+            Groups = new List<Group>();
         }
 
-        public char Number { get; }
-        public List<Group> Groups { get; private set; }
+        public int Number { get; }
+        public List<Group> Groups { get; }
         public void AddGroup(Group group)
         {
             Groups.Add(group);

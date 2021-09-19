@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Isu.Tools;
 
-namespace Isu.Services
+namespace Isu.Entities
 {
     public class Group
     {
@@ -12,7 +10,7 @@ namespace Isu.Services
             if (name[0] != 'M' || name[1] != '3' || name.Length != 5)
             {
                 throw new IsuException(
-                    "error: group's name is not correct, name mast be look like M3XYY, where X - course number, YY - group number");
+                    "error: group's name is not correct, name must be look like M3XYY, where X - course number, YY - group number");
             }
 
             if (name[2] != '1' && name[2] != '2' && name[2] != '3' && name[2] != '4')
@@ -22,10 +20,14 @@ namespace Isu.Services
             }
 
             Name = name;
+            CourseNumber = int.Parse(name[2].ToString());
+
+            Students = new List<Student>();
         }
 
-        public string Name { get; set; }
-        public List<Student> Students { get; private set; }
+        public string Name { get; }
+        public int CourseNumber { get; }
+        public List<Student> Students { get; }
 
         public void AddStudent(Student student)
         {
@@ -36,6 +38,11 @@ namespace Isu.Services
         public void DeleteStudent(Student student)
         {
             Students.Remove(student);
+        }
+
+        public bool HasStudent(Student student)
+        {
+            return Students.Contains(student);
         }
     }
 }
