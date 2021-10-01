@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Shops.Entities
 {
@@ -9,55 +10,47 @@ namespace Shops.Entities
         {
             Name = name;
             Bank = 0;
-            Products = new List<Tuple<Product, double, int>>();
+            Products = new List<Product>();
             Address = address;
             Id = id;
         }
 
         public string Name { get; }
-        public List<Tuple<Product, double, int>> Products { get; }
+        public List<Product> Products { get; }
         public double Bank { get; set; }
         public string Address { get; }
         public int Id { get; }
 
-        public void AddProduct(Product product, double price, int quantity)
+        public void AddProduct(Product product)
         {
-            product.AddShop(this);
-            Bank -= price * quantity;
-            Tuple<Product, double, int> article;
-            foreach (Tuple<Product, double, int> products in Products)
+            Bank -= product.Price * product.Quantity;
+            Product newProduct;
+            foreach (Product products in Products.Where(products => products == product))
             {
-                if (products.Item1 != product) continue;
-                article = new Tuple<Product, double, int>(product, price, quantity + products.Item3);
                 Products.Remove(products);
-                Products.Add(article);
+                newProduct = new Product(product.Name, product.Id, product.Price, product.Quantity + products.Quantity);
+                Products.Add(newProduct);
                 return;
             }
 
-            article = new Tuple<Product, double, int>(product, price, quantity);
-            Products.Add(article);
+            newProduct = new Product(product);
+            Products.Add(newProduct);
         }
 
-        public Tuple<Product, double, int> FindProduct(string name)
+        public Product FindProduct(string name)
         {
-            foreach (var article in Products)
-            {
-                if (article.Item1.Name == name) return article;
-            }
-
-            return null;
+            return Products.FirstOrDefault(product => product.Name == name);
         }
 
         public double BuyAProduct(Product product, int count)
         {
             double summ = 0;
-            foreach (Tuple<Product, double, int> tuple in Products)
+            foreach (Product pr in Products.Where(pr => pr == product))
             {
-                if (tuple.Item1 != product) continue;
-                Products.Remove(tuple);
-                Products.Add(new Tuple<Product, double, int>(tuple.Item1, tuple.Item2, tuple.Item3 - count));
-                Bank += tuple.Item2 * count;
-                summ = tuple.Item2 * count;
+                Products.Remove(pr);
+                Products.Add(new Product(pr.Name, pr.Id, pr.Price, pr.Quantity - count));
+                Bank += pr.Price * count;
+                summ = pr.Quantity * count;
                 return summ;
             }
 

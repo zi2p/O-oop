@@ -1,41 +1,26 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using Shops.Entities;
-
-namespace Shops
+﻿namespace Shops.Entities
 {
     public class Product
     {
-        private List<Shop> _shops;
-
-        public Product(string name, int id)
+        public Product(string name, int id, double price, int quantity)
         {
             Name = name;
-            _shops = new List<Shop>();
             Id = id;
+            Price = price;
+            Quantity = quantity;
+        }
+
+        public Product(Product product)
+        {
+            Name = product.Name;
+            Id = product.Id;
+            Price = product.Price;
+            Quantity = product.Quantity;
         }
 
         public int Id { get; }
+        public int Quantity { get; }
         public string Name { get; }
-
-        public void AddShop(Shop shop)
-        {
-             if (!_shops.Contains(shop)) _shops.Add(shop);
-        }
-
-        public Shop GetShop(int count)
-        {
-            double bestPrice = 100000000;
-            Shop bestShop = null;
-            foreach (Shop shop in _shops)
-            {
-                if (shop.FindProduct(Name).Item3 < count || !(shop.FindProduct(Name).Item2 < bestPrice)) continue;
-                bestPrice = shop.FindProduct(Name).Item2;
-                bestShop = shop;
-            }
-
-            return bestShop;
-        }
+        public double Price { get; }
     }
 }

@@ -24,11 +24,10 @@ namespace Shops.Services
             Product product = FindProduct(name);
             if (product == null)
             {
-                product = new Product(name, _idProduct++);
-                product.AddShop(shop);
+                product = new Product(name, _idProduct++, price, quantity);
             }
 
-            shop.AddProduct(product, price, quantity);
+            shop.AddProduct(product);
             if (!_products.Contains(product)) _products.Add(product);
             return product;
         }
@@ -40,25 +39,39 @@ namespace Shops.Services
 
         public void Purchase(List<Tuple<string, int>> products, double money) // покупка товаров по списку (с наименьшей стоимостью)
         {
-            foreach (Tuple<string, int> product in products)
+            Shop bestShop;
+            foreach ((string name, int quantity) in products)
             {
-                Product pr = FindProduct(product.Item1);
+                Product pr = FindProduct(name);
                 if (pr == null) throw new Exception("error: the product is out of stock \n");
-                money -= pr.GetShop(product.Item2).BuyAProduct(pr, product.Item2);
+                bestShop = _shops[0];
+                double bestPrice = 1000000000000;
+                foreach (Shop shop in _shops)
+                {
+                    foreach (Product p in shop.Products.Where(p => p.Name == pr.Name && p.Price < bestPrice && quantity < pr.Quantity))
+                    {
+                        bestPrice = p.Price;
+                        bestShop = shop;
+                    }
+                }
+
+                if (Math.Abs(bestPrice - 1000000000000) == 0) throw new Exception("error: the product is not enough \n");
+
+                money -= bestShop.BuyAProduct(pr, quantity);
                 if (money < 0) throw new Exception("error: you didn't have enough money \n");
             }
         }
 
         public void ChangePrice(Product product, double newPrice, Shop shop)
         {
-            if (FindProduct(product.Name) == null)
+            Product pr = shop.FindProduct(product.Name);
+            if (pr == null)
             {
                 throw new Exception("error: can't change the price for a product that doesn't exist \n");
             }
 
-            Tuple<Product, double, int> article = shop.FindProduct(product.Name);
-            shop.Products.Remove(article);
-            shop.Products.Add(new Tuple<Product, double, int>(article.Item1, newPrice, article.Item3));
+            shop.Products.Remove(pr);
+            shop.Products.Add(new Product(pr.Name, pr.Id, newPrice, pr.Quantity));
         }
     }
 }

@@ -22,8 +22,8 @@ namespace Shops.Tests
         {
             Shop shop = _service.AddShop("24h", "Биржевой переулок, 6");
             Product product = _service.AddProduct("зубная паста Paradontax",2, 120, shop);
-            Assert.That(shop.FindProduct(product.Name).Item1.Equals(product));
-            Assert.That(shop.FindProduct(product.Name).Item3.Equals(120));
+            Assert.That(shop.FindProduct(product.Name).Name.Equals(product.Name));
+            Assert.That(shop.FindProduct(product.Name).Quantity.Equals(120));
             var list = new Tuple<string, int>(product.Name, 2);
             var purchase = new List<Tuple<string, int>>();
             purchase.Add(list);
@@ -38,24 +38,23 @@ namespace Shops.Tests
             Product product = _service.AddProduct("зубная паста Paradontax",2, 120, shop);
             double newPrice = 1.9;
             _service.ChangePrice(product,newPrice,shop);
-            Assert.That(shop.FindProduct(product.Name).Item2.Equals(newPrice));
+            Assert.That(shop.FindProduct(product.Name).Price.Equals(newPrice));
         }
 
         [Test]
         public void SearchForACheapShop()
         {
             Shop shop1 = _service.AddShop("24h", "ул. Мира, д. 10");
-            Shop shop2 = _service.AddShop("Nice Day", "Солнечный пр-кт, д. 2");
             Product product1 = _service.AddProduct("зубная паста Paradontax", 2, 120, shop1);
-            var product2 = new Product("ветчина ПАПА МОЖЕТ", 8);
-            Product product3 = _service.AddProduct("влажные салфетки Aura", 0.3, 230, shop1);
-            _service.AddProduct(product1.Name, 0.4, 400, shop2);
+            Product product2 = _service.AddProduct("ветчина ПАПА МОЖЕТ", 3, 45, shop1);
             var list1 = new List<Tuple<string, int>>();
             var list2 = new List<Tuple<string, int>>();
             var pr1 = new Tuple<string, int>(product1.Name, 100000);
-            var pr2 = new Tuple<string, int>(product2.Name, 14);
+            var pr2 = new Tuple<string, int>(product2.Name, 45);
+            var pr3 = new Tuple<string, int>("влажные салфетки AURA", 19);
             list1.Add(pr1);
             list2.Add(pr2);
+            list1.Add(pr3);
             Assert.Catch<Exception>(() =>
             {
                 _service.Purchase(list1,10000000.1);
@@ -80,7 +79,7 @@ namespace Shops.Tests
             var pr1 = new Tuple<string, int>(product1.Name, 10);
             var pr2 = new Tuple<string, int>(product2.Name, 14);
             var pr3 = new Tuple<string, int>(product3.Name, 120);
-            var pr4 = new Tuple<string, int>(product1.Name, 158);
+            var pr4 = new Tuple<string, int>(product1.Name, 1058);
             list1.Add(pr1);
             list1.Add(pr2);
             list1.Add(pr3);
