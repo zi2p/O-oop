@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using NUnit.Framework;
+using Shops.Entities;
 using Shops.Services;
 
 namespace Shops.Tests
