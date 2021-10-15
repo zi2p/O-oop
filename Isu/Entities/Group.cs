@@ -7,10 +7,10 @@ namespace Isu.Entities
     {
         public Group(string name)
         {
-            if (name[0] != 'M' || name[1] != '3' || name.Length != 5)
+            if (name[1] != '3' || name.Length != 5)
             {
                 throw new IsuException(
-                    "error: group's name is not correct, name must be look like M3XYY, where X - course number, YY - group number");
+                "error: group's name is not correct, name must be look like *3XYY, where X - course number, YY - group number, * - MegaFaculty");
             }
 
             if (name[2] != '1' && name[2] != '2' && name[2] != '3' && name[2] != '4')
