@@ -111,7 +111,6 @@ namespace IsuExtra.Services
         public List<Student> GetListStudentsOGNPCourse(OGNP ognp)
         {
             var result = new List<Student>();
-
             foreach (Group group in ognp.Groups)
             {
                 result.AddRange(group.Students);
