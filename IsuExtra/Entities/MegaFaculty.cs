@@ -1,5 +1,6 @@
 ﻿using System;
 using Isu.Entities;
+using IsuExtra.Tools;
 
 namespace IsuExtra.Entities
 {
@@ -21,7 +22,7 @@ namespace IsuExtra.Entities
                 case 'N':
                 case 'W':
                 case 'V':
-                    Name = "FT";
+                    Name = "FTF";
                     return;
                 case 'O':
                 case 'T':
@@ -37,14 +38,15 @@ namespace IsuExtra.Entities
                     Name = "NOJ";
                     return;
                 default:
-                    throw new Exception(
+                    throw new OGNPException(
                         "error: group's name is not correct");
             }
         }
 
         public MegaFaculty(string name)
         {
-            Name = name;
+            if (name is "TINT" or "NOJ" or "FTMI" or "BTINS" or "FTF" or "KTY") Name = name;
+            else throw new OGNPException("there is no such faculty");
         }
 
         public string Name { get; }

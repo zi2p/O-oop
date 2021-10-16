@@ -29,12 +29,6 @@ namespace IsuExtra.Entities
 
         public List<Group> Groups { get; }
 
-        public void AddGroup(string nameGroup)
-        {
-            FreeSeats += 22;
-            NumberOfSeats += 22;
-        }
-
         public void AddGroupTimetable(Timetable table)
         {
             Timetables.Add(table);

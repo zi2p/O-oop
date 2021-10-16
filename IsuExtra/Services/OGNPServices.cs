@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Isu.Entities;
 using IsuExtra.Entities;
+using IsuExtra.Tools;
 
 namespace IsuExtra.Services
 {
@@ -17,21 +18,10 @@ namespace IsuExtra.Services
             return ognp;
         }
 
-        public MegaFaculty AddMegaFaculty(Group group)
-        {
-            var megaFaculty = new MegaFaculty(group);
-            return megaFaculty;
-        }
-
         public MegaFaculty AddMegaFaculty(string name)
         {
             var megaFaculty = new MegaFaculty(name);
             return megaFaculty;
-        }
-
-        public OGNP FindOGNP(string name)
-        {
-            return _ognPs.FirstOrDefault(ognp => ognp.Name == name);
         }
 
         public List<OGNP> GetList()
@@ -42,8 +32,8 @@ namespace IsuExtra.Services
         public void StudentRegistration(OGNP ognp, Student person)
         {
             var mISU = new MegaFaculty(person.Group);
-            if (mISU.Name == ognp.MegaFaculty.Name) throw new Exception("you cannot enroll in courses of your faculty");
-            if (ognp.FreeSeats == 0) throw new Exception("we're out of seats");
+            if (mISU.Name == ognp.MegaFaculty.Name) throw new OGNPException("you cannot enroll in courses of your faculty");
+            if (ognp.FreeSeats == 0) throw new OGNPException("we're out of seats");
             foreach (Group varGroup in ognp.Groups)
             {
                 if (!NoIntersections(person.Group, varGroup)) continue;
@@ -52,7 +42,7 @@ namespace IsuExtra.Services
                 return;
             }
 
-            throw new Exception("you cannot enroll in this course due to schedule intersections");
+            throw new OGNPException("you cannot enroll in this course due to schedule intersections");
         }
 
         public void DeletStudentOGNP(OGNP ognp, Student person)
@@ -65,7 +55,7 @@ namespace IsuExtra.Services
                 return;
             }
 
-            throw new Exception("you have not been enrolled in this course");
+            throw new OGNPException("you have not been enrolled in this course");
         }
 
         public bool NoIntersections(Group isuGroup, Group ognpGroup)
@@ -82,7 +72,7 @@ namespace IsuExtra.Services
                 ognpTable = tt;
             }
 
-            if (isuTable == null || ognpTable == null) throw new Exception("group not found");
+            if (isuTable == null || ognpTable == null) throw new OGNPException("group not found");
             for (int time = 0; time < 8; time++)
             {
                 for (int day = 0; day < 6; day++)
