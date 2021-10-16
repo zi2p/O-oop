@@ -95,13 +95,13 @@ namespace IsuExtra.Services
             return true;
         }
 
-        public void AddTimetable(Group group, string[,] table)
+        public void AddTimetable(Group group, Lesson[,] table)
         {
             var timetable = new Timetable(table, group);
             _timetables.Add(timetable);
         }
 
-        public void AddGroupTimetableInOGNP(OGNP ognp, Group group, string[,] table)
+        public void AddGroupTimetableInOGNP(OGNP ognp, Group group, Lesson[,] table)
         {
             var timetable = new Timetable(table, new Group(group.Name));
             ognp.AddGroupTimetable(timetable);

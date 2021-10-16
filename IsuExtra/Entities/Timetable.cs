@@ -4,9 +4,9 @@ namespace IsuExtra.Entities
 {
     public class Timetable // у ученика может быть максимум 8 пар в день, учится он 6 дней в неделю (воскресенье выходной)
     {
-        public Timetable(string[,] table, Group group)
+        public Timetable(Lesson[,] table, Group group)
         {
-            Table = new string[6, 8]
+            Table = new Lesson[6, 8]
             {
                 { null, null, null, null, null, null, null, null },
                 { null, null, null, null, null, null, null, null },
@@ -19,7 +19,7 @@ namespace IsuExtra.Entities
             Group = group;
         }
 
-        public string[,] Table { get; set; }
+        public Lesson[,] Table { get; set; }
         public Group Group { get; }
     }
 }
