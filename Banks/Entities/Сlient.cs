@@ -5,11 +5,13 @@ namespace Banks.Entities
 {
     public class Сlient
     {
+        private const uint MAXPASSPORT = unchecked(999999999);
+        private const uint MINPASSPORT = unchecked(1000000000U);
         public Сlient(string name, uint id, string address = null, uint passport = default)
         {
             Name = name;
             Address = address;
-            Passport = passport;
+            SetPassport(passport);
             ID = id;
             BankAccount = null;
         }
@@ -29,7 +31,7 @@ namespace Banks.Entities
 
         public void SetPassport(uint passport)
         {
-            Passport = passport;
+            if (passport <= MAXPASSPORT && passport >= MINPASSPORT) Passport = passport;
         }
 
         public void SetAddress(string address)

@@ -4,9 +4,9 @@ namespace Banks.Entities.BankAccounts
 {
     public class DebitAccount : IBankAccount
     {
-        // обычный счет с фиксированным процентом на остаток.
-        // Деньги можно снимать в любой момент, в минус уходить нельзя.
-        // Комиссий нет
+        /* обычный счет с фиксированным процентом на остаток.
+         Деньги можно снимать в любой момент, в минус уходить нельзя.
+         Комиссий нет */
         private Bank _myBank;
         public DebitAccount(double sum, double proc = 1)
         {

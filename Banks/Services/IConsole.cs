@@ -1,7 +1,9 @@
-﻿namespace Banks.Services
+﻿using Banks.Entities.BankAccounts;
+
+namespace Banks.Services
 {
     public interface IConsole
     {
-        public void EnterTheData();
+        public IBankAccount EnterTheData();
     }
 }
