@@ -1,7 +1,7 @@
 ﻿using System;
 using Banks.Entities.BankAccounts;
 
-namespace Banks.Entities
+namespace Banks.Entities.Client
 {
     public class Сlient
     {
@@ -11,38 +11,18 @@ namespace Banks.Entities
         {
             Name = name;
             Address = address;
-            SetPassport(passport);
+            Passport = passport;
             ID = id;
             BankAccount = null;
         }
 
+        public string Address { get; set; }
+        public uint Passport { get; set; }
+        public uint Phone { get; set; }
+
+        public uint ID { get; }
+        public IBankAccount BankAccount { get; set; }
         private string Name { get; }
-        private string Address { get; set; }
-        private uint Passport { get; set; }
-
-        private uint ID { get; }
-        private IBankAccount BankAccount { get; set; }
-        private uint Phone { get; set; }
-
-        public void SetAccount(IBankAccount account)
-        {
-            BankAccount = account;
-        }
-
-        public void SetPassport(uint passport)
-        {
-            if (passport <= MAXPASSPORT && passport >= MINPASSPORT) Passport = passport;
-        }
-
-        public void SetAddress(string address)
-        {
-            Address = address;
-        }
-
-        public void SetPhone(uint phone)
-        {
-            Phone = phone;
-        }
 
         public uint GetPhone()
         {

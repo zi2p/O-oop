@@ -1,4 +1,6 @@
 ﻿using System;
+using Banks.Entities.Client;
+using Banks.Services.QueueOfResponsibilities;
 
 namespace Banks.Entities.BankAccounts
 {
@@ -8,6 +10,7 @@ namespace Banks.Entities.BankAccounts
          Деньги можно снимать в любой момент, в минус уходить нельзя.
          Комиссий нет */
         private Bank _myBank;
+        private QueueOfResponsibilities _queue = new QueueOfResponsibilities();
         public DebitAccount(double sum, double proc = 1)
         {
             Amount = sum;
@@ -51,13 +54,22 @@ namespace Banks.Entities.BankAccounts
             return Amount;
         }
 
+        public double GetPercentages()
+        {
+            return Percentages;
+        }
+
+        public double GetCommission()
+        {
+            return 0;
+        }
+
         public double CashWithdrawal(double sum, DateTime dateTime)
         {
             if (!(Amount > sum)) return 0; // столько мы можем снять (ложный код возврата)
             Amount -= sum;
             var t = new Tuple<string, double, DateTime>("+", sum, dateTime);
-            AppointPercentages(Percentages);
-            AddingInterestToTheAmount();
+            _queue.BankingOperation(this);
             LastTransaction = t;
             return sum;
         }
@@ -66,9 +78,7 @@ namespace Banks.Entities.BankAccounts
         {
             Amount += sum;
             var t = new Tuple<string, double, DateTime>("-", sum, dateTime);
-
-            AppointPercentages(Percentages);
-            AddingInterestToTheAmount();
+            _queue.BankingOperation(this);
             LastTransaction = t;
             return Amount;
         }
@@ -79,8 +89,7 @@ namespace Banks.Entities.BankAccounts
             Amount -= sum;
             person.SetMoney(sum, dateTime);
             var t = new Tuple<string, double, DateTime>("-", sum, dateTime);
-            AppointPercentages(Percentages);
-            AddingInterestToTheAmount();
+            _queue.BankingOperation(this);
             LastTransaction = t;
         }
 

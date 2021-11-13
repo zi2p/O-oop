@@ -1,4 +1,6 @@
 ﻿using System;
+using Banks.Entities.Client;
+using Banks.Services.QueueOfResponsibilities;
 
 namespace Banks.Entities.BankAccounts
 {
@@ -7,6 +9,7 @@ namespace Banks.Entities.BankAccounts
         /* имеет кредитный лимит, в рамках которого можно уходить в минус (в плюс тоже можно).
          Процента на остаток нет. Есть фиксированная комиссия за использование, если клиент в минусе.*/
         private Bank _myBank;
+        private QueueOfResponsibilities _queue = new QueueOfResponsibilities();
         public CreditAccount(double commission = default)
         {
             Commission = commission;
@@ -20,6 +23,16 @@ namespace Banks.Entities.BankAccounts
         public void SetMyBank(Bank bank)
         {
             _myBank = bank;
+        }
+
+        public double GetPercentages()
+        {
+            return 0;
+        }
+
+        public double GetCommission()
+        {
+            return Commission;
         }
 
         public void AppointСommission(double commission)
@@ -44,7 +57,7 @@ namespace Banks.Entities.BankAccounts
         {
             Amount -= sum;
             var t = new Tuple<string, double, DateTime>("-", sum, dateTime);
-            AppointСommission(Commission);
+            _queue.BankingOperation(this);
             LastTransaction = t;
             return sum;
         }
@@ -53,7 +66,6 @@ namespace Banks.Entities.BankAccounts
         {
             Amount += sum;
             var t = new Tuple<string, double, DateTime>("-", sum, dateTime);
-            AppointСommission(Commission);
             LastTransaction = t;
             return Amount;
         }
@@ -63,7 +75,6 @@ namespace Banks.Entities.BankAccounts
             Amount -= sum;
             person.SetMoney(sum, dateTime);
             var t = new Tuple<string, double, DateTime>("-", sum, dateTime);
-            AppointСommission(Commission);
             LastTransaction = t;
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Banks.Entities.BankAccounts;
+using Banks.Entities.Client;
 using Banks.Entities.Methods;
 using Banks.Entities.Methods.Percentage;
 using Banks.Services;
@@ -15,6 +16,7 @@ namespace Banks.Entities
             ID = id;
             Clients = new List<Tuple<Сlient, IBankAccount>>();
             ClientID = 0;
+            TransferLimit = new TransferLimit(double.MaxValue);
         }
 
         private List<Tuple<Сlient, IBankAccount>> Clients { get; }
@@ -23,6 +25,16 @@ namespace Banks.Entities
         private IMethodPercentageChange PercentageChange { get; set; }
         private uint ID { get; }
         private uint ClientID { get; set; }
+
+        public TransferLimit GetDoubtfulLimit()
+        {
+            return DoubtfulLimit;
+        }
+
+        public TransferLimit GetTransferLimit()
+        {
+            return TransferLimit;
+        }
 
         public void SetMyCentralBank(CentralBank cb)
         {

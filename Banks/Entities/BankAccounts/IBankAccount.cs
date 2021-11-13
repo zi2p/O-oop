@@ -1,4 +1,5 @@
 ﻿using System;
+using Banks.Entities.Client;
 
 namespace Banks.Entities.BankAccounts
 {
@@ -13,5 +14,7 @@ namespace Banks.Entities.BankAccounts
         public void TransferOfMoney(double sum, Сlient person, DateTime dateTime);
         public void DeleteLastTransaction();
         public void SetMyBank(Bank bank);
+        public double GetPercentages();
+        public double GetCommission();
     }
 }

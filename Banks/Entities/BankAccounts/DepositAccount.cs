@@ -1,5 +1,7 @@
 ﻿using System;
+using Banks.Entities.Client;
 using Banks.Entities.Methods.Percentage;
+using Banks.Services.QueueOfResponsibilities;
 
 namespace Banks.Entities.BankAccounts
 {
@@ -11,6 +13,7 @@ namespace Banks.Entities.BankAccounts
          Комиссий нет.
          Проценты должны задаваться для каждого банка свои.*/
         private Bank _myBank;
+        private QueueOfResponsibilities _queue = new QueueOfResponsibilities();
         public DepositAccount(double sum, DateTime date)
         {
             Amount = sum;
@@ -30,6 +33,16 @@ namespace Banks.Entities.BankAccounts
         public void SetMyBank(Bank bank)
         {
             _myBank = bank;
+        }
+
+        public double GetPercentages()
+        {
+            return 0;
+        }
+
+        public double GetCommission()
+        {
+            return 0;
         }
 
         public void AppointСommission(double commission)
@@ -61,8 +74,7 @@ namespace Banks.Entities.BankAccounts
             if (dateTime <= Date || !(Amount > sum)) return 0;
             Amount -= sum;
             var t = new Tuple<string, double, DateTime>("-", sum, dateTime);
-            AppointPercentages(GetPercentages(Amount, PercentageChange));
-            AddingInterestToTheAmount();
+            _queue.BankingOperation(this);
             LastTransaction = t;
             return sum;
         }
@@ -71,8 +83,7 @@ namespace Banks.Entities.BankAccounts
         {
             Amount += sum;
             var t = new Tuple<string, double, DateTime>("-", sum, dateTime);
-            AppointPercentages(GetPercentages(Amount, PercentageChange));
-            AddingInterestToTheAmount();
+            _queue.BankingOperation(this);
             LastTransaction = t;
             return Amount;
         }
@@ -84,8 +95,7 @@ namespace Banks.Entities.BankAccounts
             Amount -= sum;
             person.SetMoney(sum, dateTime);
             var t = new Tuple<string, double, DateTime>("-", sum, dateTime);
-            AppointPercentages(GetPercentages(Amount, PercentageChange));
-            AddingInterestToTheAmount();
+            _queue.BankingOperation(this);
             LastTransaction = t;
         }
 

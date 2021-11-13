@@ -1,8 +1,10 @@
 ﻿using System;
 using Banks.Entities;
 using Banks.Entities.BankAccounts;
+using Banks.Entities.Client;
 using Banks.Entities.Methods;
 using Banks.Entities.Methods.Percentage;
+using Banks.Services.Factory;
 
 namespace Banks.Services
 {
@@ -34,39 +36,8 @@ namespace Banks.Services
 
             Console.WriteLine("Каким счётом Вы хотели бы воспользоваться? (1-Дебетовый счет, 2-Депозит, 3-Кредитный счет) ");
             int account = Convert.ToInt32(Console.ReadLine());
-            switch (account)
-            {
-                case 1:
-                case 2:
-                {
-                    Console.WriteLine("Какую сумму Вы кладете на счет? ");
-                    sum = Convert.ToDouble(Console.ReadLine());
-                    switch (account)
-                    {
-                        case 1:
-                        {
-                            bankAccount = new DebitAccount(sum);
-                            break;
-                        }
-
-                        case 2:
-                        {
-                            bankAccount = new DebitAccount(sum);
-                            break;
-                        }
-                    }
-
-                    break;
-                }
-
-                case 3:
-                {
-                    sum = double.MaxValue;
-                    bankAccount = new CreditAccount();
-                    break;
-                }
-            }
-
+            var myFactory = new FactoryConsole();
+            bankAccount = myFactory.CreatedBankAccount(account);
             Console.WriteLine("Ваш банковский аккаунт создан. Спасибо за визит.");
             var person = new Сlient(name, 0, address, passport);
             var transferLimit = new TransferLimit(sum / 2);
