@@ -6,36 +6,41 @@ namespace BackupsExtra.Limits
 {
     public class DateOrQuantityLimit : ILimit
     {
-        private DateTime _date;
-        private int _quantity;
-
-        public DateOrQuantityLimit(DateTime date, int count)
+        protected DateOrQuantityLimit(DateTime date, int count)
         {
             if (count <= 0)
             {
                 throw new BackupsExtraException("all points are deleted");
             }
 
-            _quantity = count;
-            _date = date;
+            Quantity = count;
+            Date = date;
+        }
+
+        public DateTime Date { get; }
+        public int Quantity { get; }
+
+        public static DateOrQuantityLimit CreateInstance(DateTime date, int count)
+        {
+            return new DateOrQuantityLimit(date, count);
         }
 
         public void Limit(BackupJob bj) // сохраняет наибольшее число точек возврата
         {
-            if (bj.RestorePoints.Count <= _quantity) return;
-            if (bj.RestorePoints[_quantity - 1].GetDate().Year <= _date.Year &&
-                bj.RestorePoints[_quantity - 1].GetDate().Month <= _date.Month &&
-                bj.RestorePoints[_quantity - 1].GetDate().Day <= _date.Day)
+            if (bj.RestorePoints.Count <= Quantity) return;
+            if (bj.RestorePoints[Quantity - 1].GetDate().Year <= Date.Year &&
+                bj.RestorePoints[Quantity - 1].GetDate().Month <= Date.Month &&
+                bj.RestorePoints[Quantity - 1].GetDate().Day <= Date.Day)
             {
-                bj.RestorePoints.RemoveAt(_quantity);
+                bj.RestorePoints.RemoveAt(Quantity);
             }
 
             int i;
-            for (i = _quantity - 1; i < bj.RestorePoints.Count; i++)
+            for (i = Quantity - 1; i < bj.RestorePoints.Count; i++)
             {
-                if (bj.RestorePoints[i].GetDate().Year < _date.Year ||
-                    bj.RestorePoints[i].GetDate().Month < _date.Month ||
-                    bj.RestorePoints[i].GetDate().Day < _date.Day) continue;
+                if (bj.RestorePoints[i].GetDate().Year < Date.Year ||
+                    bj.RestorePoints[i].GetDate().Month < Date.Month ||
+                    bj.RestorePoints[i].GetDate().Day < Date.Day) continue;
                 bj.RestorePoints.RemoveAt(i);
                 break;
             }
