@@ -17,7 +17,7 @@ namespace BackupsExtra.Limits
             _quantity = count;
         }
 
-        public void SetALimit(BackupJob bj)
+        public void Limit(BackupJob bj)
         {
             if (bj.RestorePoints.Count > _quantity) bj.RestorePoints.RemoveAt(_quantity);
         }

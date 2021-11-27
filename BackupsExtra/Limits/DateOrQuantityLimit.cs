@@ -20,7 +20,7 @@ namespace BackupsExtra.Limits
             _date = date;
         }
 
-        public void SetALimit(BackupJob bj) // сохраняет наибольшее число точек возврата
+        public void Limit(BackupJob bj) // сохраняет наибольшее число точек возврата
         {
             if (bj.RestorePoints.Count <= _quantity) return;
             if (bj.RestorePoints[_quantity - 1].GetDate().Year <= _date.Year &&

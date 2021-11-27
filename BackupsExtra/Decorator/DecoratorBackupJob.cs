@@ -49,7 +49,7 @@ namespace BackupsExtra.Decorator
 
         public void Limits()
         {
-            _limit.SetALimit(_backupJob);
+            _limit.Limit(_backupJob);
         }
 
         public void SetObject(ObjectJ obj)

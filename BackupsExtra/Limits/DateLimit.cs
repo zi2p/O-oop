@@ -14,7 +14,7 @@ namespace BackupsExtra.Limits
             _date = date;
         }
 
-        public void SetALimit(BackupJob bj)
+        public void Limit(BackupJob bj)
         {
             int count = -1 + bj.RestorePoints.TakeWhile(rp => rp.GetDate().Year < _date.Year || rp.GetDate().Month < _date.Month || rp.GetDate().Day < _date.Day).Count();
             if (count <= 0)

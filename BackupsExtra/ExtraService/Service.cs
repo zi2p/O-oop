@@ -27,7 +27,7 @@ namespace BackupsExtra.ExtraService
 
         public List<Storage> GetStoragesInRestorePoint(RestorePoint rP)
         {
-            _loger.DoingStorage(rP.Name);
+            _loger.LogStorageFile(rP.Name);
             return (from rp in bJ.GetBackupJob().RestorePoints where rp.GetDate() == rP.GetDate() select rp.GetList())
                 .FirstOrDefault();
         }
@@ -45,14 +45,14 @@ namespace BackupsExtra.ExtraService
         public RestorePoint MakeARestorePoint(DateSave dt)
         {
             RestorePoint rp = bJ.GetBackupJob().MakeARestorePoint(dt);
-            _loger.DoingRestorePoint(rp.Name);
+            _loger.LogRestorePoint(rp.Name);
             return rp;
         }
 
         public void DoingMerge(RestorePoint p1, RestorePoint p2)
         {
             bJ.DoMerge(p1, p2);
-            _loger.DoingMerge(p1, p2);
+            _loger.LogMergeRestorePoints(p1, p2);
         }
 
         public void RecoveryRestorePoint(RestorePoint rp, string path = null)

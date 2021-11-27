@@ -19,7 +19,7 @@ namespace BackupsExtra.Loger
             _streamWriter = sw;
         }
 
-        public void DoingStorage(string name)
+        public void LogStorageFile(string name)
         {
             if (_date)
             {
@@ -29,7 +29,7 @@ namespace BackupsExtra.Loger
             _streamWriter.Write("Doing storage whose name is " + name + " .\n");
         }
 
-        public void DoingRestorePoint(string name)
+        public void LogRestorePoint(string name)
         {
             if (_date)
             {
@@ -39,7 +39,7 @@ namespace BackupsExtra.Loger
             _streamWriter.Write("Doing restore point whose name is " + name + " .\n");
         }
 
-        public void DoingMerge(RestorePoint p1, RestorePoint p2)
+        public void LogMergeRestorePoints(RestorePoint p1, RestorePoint p2)
         {
             if (_date)
             {

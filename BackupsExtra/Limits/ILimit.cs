@@ -4,6 +4,6 @@ namespace BackupsExtra.Limits
 {
     public interface ILimit
     {
-        public void SetALimit(BackupJob bj);
+        public void Limit(BackupJob bj);
     }
 }
