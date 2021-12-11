@@ -15,9 +15,11 @@ namespace Reports.DAL.Entities
         [ForeignKey("DirectorId")] public Director Director { get; }
         [NotMapped]
         public List<TaskModel> Tasks { get; set; }
+        public EmployeeDTO DTO { get; set; }
 
         private Employee()
         {
+            DTO = new EmployeeDTO();
         }
 
         public Employee(int id, string name)
@@ -30,6 +32,7 @@ namespace Reports.DAL.Entities
 
             Id = id;
             Name = name;
+            DTO = new EmployeeDTO(id, name);
         }
 
         public void TakeTask(TaskModel task)

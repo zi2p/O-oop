@@ -77,7 +77,7 @@ namespace Reports.Clients
             Employee employee = new Employee(id, name);
             Console.WriteLine("Введите номер задачи для комментирования: \n");
             int idTask = Convert.ToInt32(Console.ReadLine());
-            TaskModel tm = _service.GetTaskById(idTask);
+            TaskModelDTO tm = _service.GetTaskById(idTask);
             if (tm == null)
             {
                 Console.WriteLine("Запись не найдена.\n");
@@ -94,9 +94,11 @@ namespace Reports.Clients
             Console.WriteLine("Введите номер сотрудника, затем, введите номер задачи: \n");
             int idEmployee = Convert.ToInt32(Console.ReadLine());
             int idTask = Convert.ToInt32(Console.ReadLine());
-            Employee employee = _service.FindById(idEmployee);
+            EmployeeDTO employee = _service.FindById(idEmployee);
+            var empl = new Employee(idEmployee, employee.NameDTO);
+            var task = new TaskModel(idTask);
             if (employee==null) Console.WriteLine("Сотрудник не найден.\n");
-            Console.WriteLine(_service.AddTaskToReport(employee.Report(),_service.GetTaskById(idTask)));
+            Console.WriteLine(_service.AddTaskToReport(empl.Report(),task));
         }
         
         internal static void Main1(string[] args)

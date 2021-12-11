@@ -13,29 +13,29 @@ namespace Reports.Server.Services
         {
         }
 
-        public TaskModel FindById(int id)
+        public TaskModelDTO FindById(int id)
         {
-            return Tasks.FirstOrDefault(task => task.Id == id);
+            return Tasks.FirstOrDefault(task => task.Id == id)!=null ? Tasks.FirstOrDefault(task => task.Id == id)?.DTO : null;
         }
 
-        public List<TaskModel> FindByDateBorn(DateTime born)
+        public List<TaskModelDTO> FindByDateBorn(DateTime born)
         {
-            return Tasks.Where(task => task.Born == born).ToList();
+            return (from task in Tasks where task.Born == born select task.DTO).ToList();
         }
 
-        public List<TaskModel> FindByLastUpdate(DateTime update)
+        public List<TaskModelDTO> FindByLastUpdate(DateTime update)
         {
-            return Tasks.Where(task => task.Update == update).ToList();
+            return (from task in Tasks where task.Update == update select task.DTO).ToList();
         }
 
-        public List<TaskModel> FindByEmployee(Employee employee)
+        public List<TaskModelDTO> FindByEmployee(Employee employee)
         {
-            return Tasks.Where(task => task.AssignedEmployee.Id == employee.Id).ToList();
+            return (from task in Tasks where task.AssignedEmployee.Id == employee.Id select task.DTO).ToList();
         }
 
-        public TaskModel FindByEmployeeComment(Employee employee)
+        public TaskModelDTO FindByEmployeeComment(Employee employee)
         {
-            return Tasks.FirstOrDefault(task => task.Commenter.Id == employee.Id);
+            return Tasks.FirstOrDefault(task => task.Commenter.Id == employee.Id)!=null ? Tasks.FirstOrDefault(task => task.Commenter.Id == employee.Id)?.DTO : null;
         }
 
         public void ChangeEmployee(Employee lastEmployee, Employee nowEmployee, TaskModel task)
@@ -44,9 +44,9 @@ namespace Reports.Server.Services
             if (task.AssignedEmployee.Id == lastEmployee.Id) task.AssignedEmployee = nowEmployee;
         }
 
-        public List<TaskModel> ListForEmployee(Employee employee)
+        public List<TaskModelDTO> ListForEmployee(Employee employee)
         {
-            return Tasks.Where(task => task.AssignedEmployee.Id == employee.Id).ToList();
+            return (from task in Tasks where task.AssignedEmployee.Id == employee.Id select task.DTO).ToList();
         }
     }
 }

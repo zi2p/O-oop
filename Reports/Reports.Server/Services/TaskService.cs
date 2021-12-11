@@ -16,15 +16,15 @@ namespace Reports.Server.Services
             _context = context;
         }
         
-        public async Task<TaskModel> Create()
+        public async Task<TaskModelDTO> Create()
         {
-            var task = new TaskModel();
-            EntityEntry<TaskModel> taskFromDb = await _context.Tasks.AddAsync(task);
+            var task = new TaskModelDTO();
+            EntityEntry<TaskModelDTO> taskFromDb = await _context.Tasks.AddAsync(task);
             await _context.SaveChangesAsync();
             return task;
         }
         
-        public async Task<TaskModel> FindById(int id)
+        public async Task<TaskModelDTO> FindById(int id)
         {
             return await _context.Tasks.FirstOrDefaultAsync(task => task.Id == id);
         }

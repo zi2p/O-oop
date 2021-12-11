@@ -8,12 +8,14 @@ namespace Reports.DAL.Entities
         public Employee Employee { get; set; }
         public List<TaskModel> Tasks { get; set; }
         public int Id { get; set; }
+        public ReportDTO DTO { get; set; }
 
         public Report(Employee employee)
         {
             Employee = employee;
             Tasks = new List<TaskModel>();
             Positions = 0;
+            DTO = new ReportDTO(employee);
         }
         public void AddTask(TaskModel task)
         {

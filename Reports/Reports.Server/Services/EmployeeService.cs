@@ -21,15 +21,15 @@ namespace Reports.Server.Services
             _context = context;
         }
 
-        public async Task<Employee> Create(string name)
+        public async Task<EmployeeDTO> Create(string name)
         {
-            var employee = new Employee(_counter++, name);
-            EntityEntry<Employee> employeeFromDb = await _context.Employees.AddAsync(employee);
+            var employee = new EmployeeDTO(_counter++, name);
+            EntityEntry<EmployeeDTO> employeeFromDb = await _context.Employees.AddAsync(employee);
             await _context.SaveChangesAsync();
             return employee;
         }
 
-        public DbSet<TaskModel> GetList()
+        public DbSet<TaskModelDTO> GetList()
         {
             return _context.Tasks;
         }
@@ -46,25 +46,25 @@ namespace Reports.Server.Services
             return task.Positions == 2 ? "ACTIVE" : "RESOLVED";
         }
 
-        public Report WeekReport()
+        public ReportDTO WeekReport()
         {
-            return _teamLeader.Report();
+            return _teamLeader.Report().DTO;
         }
 
-        public DbSet<TaskModel> WeekTasks()
+        public DbSet<TaskModelDTO> WeekTasks()
         {
             return _context.Tasks;
         }
 
-        public TaskModel AddTaskToReport(Report report, TaskModel task)
+        public TaskModelDTO AddTaskToReport(Report report, TaskModel task)
         {
             if (task.AssignedEmployee.Reports.Contains(report)) report.AddTask(task);
-            return task;
+            return task.DTO;
         }
 
-        public Report GetReport(Report report)
+        public ReportDTO GetReport(Report report)
         {
-            return _teamLeader.Report();
+            return _teamLeader.Report().DTO;
         }
 
         public void MakeTeamLeader(TeamLeader employee)
@@ -72,61 +72,61 @@ namespace Reports.Server.Services
             _teamLeader = employee;
         }
 
-        public DbSet<Employee> Employees()
+        public DbSet<EmployeeDTO> Employees()
         {
             return _context.Employees;
         }
 
-        public Employee FindById(int id)
+        public EmployeeDTO FindById(int id)
         {
-            return _context.Employees.FirstOrDefault(task => task.Id == id);
+            return _context.Employees.FirstOrDefault(task => task.Id == id)!=null ? _context.Employees.FirstOrDefault(task => task.Id == id) : null;
         }
         
-        public Employee Delete(int id)
+        public EmployeeDTO Delete(int id)
         {
             foreach (Employee employee in _teamLeader.Employees.Where(employee => employee.Id == id))
             {
                 _teamLeader.Employees.Remove(employee);
-                return employee;
+                return employee.DTO;
             }
             return null;
         }
 
-        public Employee Update(Employee entity)
+        public EmployeeDTO Update(Employee entity)
         {
             _teamLeader.AddEmployee(entity);
-            return entity;
+            return entity.DTO;
         }
 
-        public async Task<TaskModel> CreateTask()
+        public async Task<TaskModelDTO> CreateTask()
         {
-            var task = new TaskModel();
-            EntityEntry<TaskModel> taskFromDb = await _context.Tasks.AddAsync(task);
+            var task = new TaskModelDTO();
+            EntityEntry<TaskModelDTO> taskFromDb = await _context.Tasks.AddAsync(task);
             await _context.SaveChangesAsync();
             return task;
         }
 
-        public TaskModel GetTaskById(int id)
+        public TaskModelDTO GetTaskById(int id)
         {
             return _context.Tasks.FirstOrDefault(x => x.Id == id);
         }
 
-        public List<TaskModel> FindTaskByDateBorn(DateTime born)
+        public List<TaskModelDTO> FindTaskByDateBorn(DateTime born)
         {
             return _service.FindByDateBorn(born);
         }
 
-        public List<TaskModel> FindTaskByLastUpdate(DateTime update)
+        public List<TaskModelDTO> FindTaskByLastUpdate(DateTime update)
         {
             return _service.FindByLastUpdate(update);
         }
 
-        public List<TaskModel> FindTaskByEmployee(Employee employee)
+        public List<TaskModelDTO> FindTaskByEmployee(Employee employee)
         {
             return _service.FindByEmployee(employee);
         }
 
-        public TaskModel FindTaskByEmployeeComment(Employee employee)
+        public TaskModelDTO FindTaskByEmployeeComment(Employee employee)
         {
             return _service.FindByEmployeeComment(employee);
         }
@@ -136,7 +136,7 @@ namespace Reports.Server.Services
             _service.ChangeEmployee(lastEmployee,nowEmployee,task);
         }
 
-        public List<TaskModel> ListForEmployee(Employee employee)
+        public List<TaskModelDTO> ListForEmployee(Employee employee)
         {
             return _service.ListForEmployee(employee);
         }

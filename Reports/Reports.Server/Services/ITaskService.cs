@@ -5,8 +5,8 @@ namespace Reports.Server.Services
 {
     public interface ITaskService
     {
-        Task<TaskModel> Create();
+        Task<TaskModelDTO> Create();
 
-        Task<TaskModel> FindById(int id);
+        Task<TaskModelDTO> FindById(int id);
     }
 }

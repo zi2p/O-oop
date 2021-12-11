@@ -11,9 +11,9 @@ namespace Reports.Server.Database
             Database.EnsureCreated();
         }
 
-        public DbSet<Employee> Employees { get; set; }
+        public DbSet<EmployeeDTO> Employees { get; set; }
 
-        public DbSet<TaskModel> Tasks { get; set; }
+        public DbSet<TaskModelDTO> Tasks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -8,25 +8,25 @@ namespace Reports.Server.Services
 {
     public interface IEmployeeService
     {
-        Task<Employee> Create(string name);
-        Employee FindById(int id);
-        Employee Delete(int id);
-        DbSet<Employee> Employees();
-        Employee Update(Employee entity);
-        Task<TaskModel> CreateTask();
-        TaskModel GetTaskById(int id);
-        List<TaskModel> FindTaskByDateBorn(DateTime born);
-        List<TaskModel> FindTaskByLastUpdate(DateTime update);
-        List<TaskModel> FindTaskByEmployee(Employee employee);
-        TaskModel FindTaskByEmployeeComment(Employee employee);
+        Task<EmployeeDTO> Create(string name);
+        EmployeeDTO FindById(int id);
+        EmployeeDTO Delete(int id);
+        DbSet<EmployeeDTO> Employees();
+        EmployeeDTO Update(Employee entity);
+        Task<TaskModelDTO> CreateTask();
+        TaskModelDTO GetTaskById(int id);
+        List<TaskModelDTO> FindTaskByDateBorn(DateTime born);
+        List<TaskModelDTO> FindTaskByLastUpdate(DateTime update);
+        List<TaskModelDTO> FindTaskByEmployee(Employee employee);
+        TaskModelDTO FindTaskByEmployeeComment(Employee employee);
         void ChangeEmployee(Employee lastEmployee, Employee nowEmployee, TaskModel task);
-        List<TaskModel> ListForEmployee(Employee employee);
-        DbSet<TaskModel> GetList();
+        List<TaskModelDTO> ListForEmployee(Employee employee);
+        DbSet<TaskModelDTO> GetList();
         string AddComment(Employee employee, string comment, TaskModel task);
         string ChangePositions(TaskModel task);
-        Report WeekReport();
-        DbSet<TaskModel> WeekTasks();
-        TaskModel AddTaskToReport(Report report, TaskModel task);
-        Report GetReport(Report report);
+        ReportDTO WeekReport();
+        DbSet<TaskModelDTO> WeekTasks();
+        TaskModelDTO AddTaskToReport(Report report, TaskModel task);
+        ReportDTO GetReport(Report report);
     }
 }
